@@ -8,7 +8,7 @@ A simple and interactive Pygame-based application for learning English vocabular
 - AI assistant can provides hints for difficult questions
 - Two AI modes:
   - **Online AI**: Powered by Grok-2 (requires internet connection)
-  - **Local AI**: Using a fine-tuned Llama3.2-1b model (works offline)
+  - **Local AI**: Using a fine-tuned Llama3.2-1b model (works offline), the reason to use 1B model is to minimize memory consumption as much as possible and generate text more quickly.
 
 ## Installation
 
