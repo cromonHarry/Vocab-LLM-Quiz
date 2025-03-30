@@ -1,6 +1,6 @@
 # English Vocabulary Game
 
-A simple and interactive Pygame-based application for learning English vocabulary through multiple-choice questions. The game features AI assistance powered by large language models to help players understand and learn new words.
+A simple and interactive Pygame-based application for learning English vocabulary through multiple-choice questions. The game features AI assistance powered by large language models to help players understand and learn new words. This reasearch is aiming to find out if hint provided by LLMs can really help learner perform better.
 
 ## Features
 
@@ -58,7 +58,7 @@ You can find:
 
 1. Find more suitable public English question datasets
 2. Refine prompts to generate better AI assistant suggestions
-3. Re-tune the Llama3.2-1b model with new datasets to improve overall performance
+3. Re-tune the small language model with new datasets to perform more interesting persona.
 
 
 
