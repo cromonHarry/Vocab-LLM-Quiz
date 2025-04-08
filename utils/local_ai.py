@@ -1,6 +1,6 @@
 import os
 import random
-from library.llama_cpp import Llama
+from llama_cpp import Llama
 from utils.config import LOCAL_MODEL_PATH
 
 class LocalLLM:
