@@ -5,7 +5,7 @@ from utils.config import (
     BUTTON_PADDING, WHITE, BLACK, GRAY, LIGHT_GRAY, START_BG_IMAGE
 )
 
-class AISelectScreen:
+class ModeSelectScreen:
     def __init__(self, game):
         self.game = game
         
@@ -24,26 +24,26 @@ class AISelectScreen:
         self.description_font = pygame.font.SysFont('Arial', 24)
         
         # Button descriptions
-        self.online_description = "Use Grok-2 for hints (requires internet)"
-        self.local_description = "Use local model for hints (no internet needed)"
+        self.normal_description = "Normal mode with a normal teacher."
+        self.sharpmouse_description = "Challenge mode with a sharpmouse teacher."
         self.current_description = None
         
     def setup_buttons(self):
         center_x = SCREEN_WIDTH // 2 - BUTTON_WIDTH // 2
         start_y = SCREEN_HEIGHT // 2 - BUTTON_HEIGHT // 2 + 100
         
-        self.online_ai_btn = Button(
+        self.normal_btn = Button(
             center_x, 
             start_y - BUTTON_HEIGHT - BUTTON_PADDING - 30,
             BUTTON_WIDTH, BUTTON_HEIGHT,
-            "Online AI"
+            "Normal"
         )
         
-        self.local_ai_btn = Button(
+        self.sharpmouse_btn = Button(
             center_x, 
             start_y,
             BUTTON_WIDTH, BUTTON_HEIGHT,
-            "Local AI"
+            "Sharpmouse"
         )
         
         self.back_btn = Button(
@@ -59,21 +59,23 @@ class AISelectScreen:
         # Check button hover states and update description
         self.current_description = None
         
-        if self.online_ai_btn.check_hover(mouse_pos):
-            self.current_description = self.online_description
-        elif self.local_ai_btn.check_hover(mouse_pos):
-            self.current_description = self.local_description
+        if self.normal_btn.check_hover(mouse_pos):
+            self.current_description = self.normal_description
+        elif self.sharpmouse_btn.check_hover(mouse_pos):
+            self.current_description = self.sharpmouse_description
         else:
             self.back_btn.check_hover(mouse_pos)
         
         # Handle button clicks
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.online_ai_btn.is_clicked(mouse_pos, event):
-                self.game.set_ai_mode("online")
-            elif self.local_ai_btn.is_clicked(mouse_pos, event):
-                self.game.set_ai_mode("local")
+            if self.normal_btn.is_clicked(mouse_pos, event):
+                self.game.set_teacher_mode("normal")
+                self.game.start_new_game()
+            elif self.sharpmouse_btn.is_clicked(mouse_pos, event):
+                self.game.set_teacher_mode("sharpmouse")
+                self.game.start_new_game()
             elif self.back_btn.is_clicked(mouse_pos, event):
-                self.game.current_screen = self.game.start_screen
+                self.game.current_screen = self.game.ai_select_screen
     
     def update(self):
         # No continuous updates needed for selection screen
@@ -87,22 +89,22 @@ class AISelectScreen:
             surface.fill(WHITE)
         
         # Draw title
-        title_surf = self.title_font.render("Select AI Assistant", True, WHITE)
+        title_surf = self.title_font.render("Select Teacher Mode", True, WHITE)
         title_rect = title_surf.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//4))
         surface.blit(title_surf, title_rect)
         
         # Draw buttons
-        self.online_ai_btn.draw(surface)
-        self.local_ai_btn.draw(surface)
+        self.normal_btn.draw(surface)
+        self.sharpmouse_btn.draw(surface)
         self.back_btn.draw(surface)
         
         # Draw description text if a button is hovered
         if self.current_description:
             # Determine which button is hovered to position the text below it
-            if self.online_ai_btn.is_hovered:
-                y_pos = self.online_ai_btn.rect.bottom + 10
-            elif self.local_ai_btn.is_hovered:
-                y_pos = self.local_ai_btn.rect.bottom + 10
+            if self.normal_btn.is_hovered:
+                y_pos = self.normal_btn.rect.bottom + 10
+            elif self.sharpmouse_btn.is_hovered:
+                y_pos = self.sharpmouse_btn.rect.bottom + 10
             else:
                 y_pos = SCREEN_HEIGHT//2 + 120  # Fallback position
                 

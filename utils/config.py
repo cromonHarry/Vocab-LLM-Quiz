@@ -34,7 +34,7 @@ BUTTON_WIDTH = 200
 BUTTON_HEIGHT = 50
 BUTTON_PADDING = 20
 
-API_KEY = "xai-fggGXlOKSoBZMAr22pHkFXm5lywD0v47XUKlagGHyuKLQLoa0zVq7PFno6sz6kYDD0DfcHy0jGeU6YF7"
+API_KEY = "switch to your own key"
 
 # Local LLM path
-LOCAL_MODEL_PATH = "model/unsloth.Q4_K_M.gguf"
+LOCAL_MODEL_PATH = "model/model_name"

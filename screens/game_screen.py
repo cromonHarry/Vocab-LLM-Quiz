@@ -8,56 +8,56 @@ from utils.config import (
 )
 
 class GameScreen:
-    def __init__(self, game, level, correct_answers, completed_questions, ai_mode="online"):
-            self.game = game
-            
-            # Init game logic.
-            self.logic = GameLogic(game.questions, ai_mode)
-            self.logic.set_state(level, correct_answers, completed_questions, ai_mode)
-            
-            # Load background image.
-            if os.path.exists(BG_IMAGE):
-                self.bg_image = pygame.image.load(BG_IMAGE)
-                self.bg_image = pygame.transform.scale(self.bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
-            else:
-                self.bg_image = None
-            
-            # Load AI assistant image.
-            if os.path.exists(ASSISTANT_IMAGE):
-                self.assistant_image = pygame.image.load(ASSISTANT_IMAGE)
-                self.assistant_image = pygame.transform.scale(self.assistant_image, (100, 100))
-                self.assistant_rect = self.assistant_image.get_rect(bottomleft=(20, SCREEN_HEIGHT - 20))
-            else:
-                self.assistant_image = None
-                self.assistant_rect = pygame.Rect(20, SCREEN_HEIGHT - 120, 100, 100)
-            
-            # Set font.
-            self.question_font = pygame.font.SysFont('Arial', 28)
-            self.option_font = pygame.font.SysFont('Arial', 24)
-            self.info_font = pygame.font.SysFont('Arial', 20)
-            self.hint_font = pygame.font.SysFont('Arial', 18)
-            
-            # Init game state.
-            self.current_question = self.logic.get_question()
-            self.selected_option = None
-            self.correct_option = None
-            self.show_result = False
-            self.result_time = 0
-            
-            # Init AI assistant
-            self.show_hint = False
-            self.hint_text = ""
-            self.option_to_remove = None
-            self.option_buttons = []
-            
-            # Create option buttons.
-            self.create_option_buttons()
-            
-            # Init animation.
-            self.animation_active = False
-            self.animation_start_time = 0
-            self.animation_duration = 1.0  # 秒
-            self.animation_type = None
+    def __init__(self, game, level, correct_answers, completed_questions, ai_mode="online", teacher_mode="normal"):
+        self.game = game
+        
+        # Init game logic
+        self.logic = GameLogic(game.questions, ai_mode, teacher_mode)
+        self.logic.set_state(level, correct_answers, completed_questions, ai_mode, teacher_mode)
+        
+        # Load background image
+        if os.path.exists(BG_IMAGE):
+            self.bg_image = pygame.image.load(BG_IMAGE)
+            self.bg_image = pygame.transform.scale(self.bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+        else:
+            self.bg_image = None
+        
+        # Load AI assistant image
+        if os.path.exists(ASSISTANT_IMAGE):
+            self.assistant_image = pygame.image.load(ASSISTANT_IMAGE)
+            self.assistant_image = pygame.transform.scale(self.assistant_image, (100, 100))
+            self.assistant_rect = self.assistant_image.get_rect(bottomleft=(20, SCREEN_HEIGHT - 20))
+        else:
+            self.assistant_image = None
+            self.assistant_rect = pygame.Rect(20, SCREEN_HEIGHT - 120, 100, 100)
+        
+        # Set font
+        self.question_font = pygame.font.SysFont('Arial', 20)
+        self.option_font = pygame.font.SysFont('Arial', 24)
+        self.info_font = pygame.font.SysFont('Arial', 20)
+        self.hint_font = pygame.font.SysFont('Arial', 18)
+        
+        # Init game state
+        self.current_question = self.logic.get_question()
+        self.selected_option = None
+        self.correct_option = None
+        self.show_result = False
+        self.result_time = 0
+        
+        # Init AI assistant
+        self.show_hint = False
+        self.hint_text = ""
+        self.option_to_remove = None
+        self.option_buttons = []
+        
+        # Create option buttons
+        self.create_option_buttons()
+        
+        # Init animation
+        self.animation_active = False
+        self.animation_start_time = 0
+        self.animation_duration = 1.0  # seconds
+        self.animation_type = None
     
     def create_option_buttons(self):
         # Create buttons for each option in the question
@@ -142,7 +142,12 @@ class GameScreen:
         
         for line in lines:
             if line.startswith("Hint:"):
-                self.hint_text = line[5:].strip()
+                hint_content = line[5:].strip()
+                # Only update hint_text if we got actual content
+                if hint_content:
+                    self.hint_text = hint_content
+                else:
+                    self.hint_text = "Think about the context and usage of this word."
             elif line.startswith("Remove option:"):
                 self.option_to_remove = line.split(':')[1].strip()
         
@@ -202,15 +207,18 @@ class GameScreen:
         # Draw game info
         level_text = f"Level: {self.logic.current_level}"
         progress_text = f"Progress: {self.logic.correct_answers}/{10}"
-        ai_text = f"AI: {'Grok-2' if self.logic.ai_mode == 'online' else 'Local Model'}"
+        ai_text = f"AI: {'Grok-3' if self.logic.ai_mode == 'online' else 'Local Model'}"
+        teacher_text = f"Teacher: {'Normal' if self.logic.teacher_mode == 'normal' else 'Sharpmouse'}"
         
         level_surf = self.info_font.render(level_text, True, BLACK)
         progress_surf = self.info_font.render(progress_text, True, BLACK)
         ai_surf = self.info_font.render(ai_text, True, BLACK)
+        teacher_surf = self.info_font.render(teacher_text, True, BLACK)
         
-        surface.blit(level_surf, (20, 40))
-        surface.blit(progress_surf, (20, 70))
-        surface.blit(ai_surf, (20, 100))
+        surface.blit(level_surf, (20, 20))
+        surface.blit(progress_surf, (20, 50))
+        surface.blit(ai_surf, (20, 80))
+        surface.blit(teacher_surf, (20, 110))
         
         # Draw question
         self.draw_question(surface)
@@ -256,7 +264,7 @@ class GameScreen:
         y = SCREEN_HEIGHT//2
         for line in lines:
             text_surf = self.question_font.render(line, True, BLACK)
-            text_rect = text_surf.get_rect(center=(SCREEN_WIDTH//2, y - 50))
+            text_rect = text_surf.get_rect(center=(SCREEN_WIDTH//2, y - 70))
             surface.blit(text_surf, text_rect)
             y += 40
             

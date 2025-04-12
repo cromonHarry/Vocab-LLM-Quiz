@@ -5,6 +5,7 @@ from screens.start_screen import StartScreen
 from screens.game_screen import GameScreen
 from screens.level_up_screen import LevelUpScreen
 from screens.ai_select_screen import AISelectScreen
+from screens.mode_select_screen import ModeSelectScreen
 from utils.data_loader import load_all_questions
 from utils.save_manager import SaveManager
 
@@ -23,6 +24,9 @@ class Game:
         # AI mode (online or local)
         self.ai_mode = "online"  # Default to online AI
         
+        # Teacher mode (normal or sharpmouse)
+        self.teacher_mode = "normal"  # Default to normal mode
+        
         # Loading screen
         self.show_loading_screen()
         
@@ -33,6 +37,7 @@ class Game:
         # Initialize screens
         self.start_screen = StartScreen(self)
         self.ai_select_screen = AISelectScreen(self)
+        self.mode_select_screen = ModeSelectScreen(self)
         self.game_screen = None
         self.level_up_screen = None
         self.complete_screen = None
@@ -57,23 +62,38 @@ class Game:
     def set_ai_mode(self, mode):
         # Set the AI mode (online or local)
         self.ai_mode = mode
+        # Switch to teacher mode selection screen
+        self.current_screen = self.mode_select_screen
+        print(f"AI Mode set to {mode}, switching to teacher mode selection")
+    
+    def set_teacher_mode(self, mode):
+        # Set the teacher mode (normal or sharpmouse)
+        self.teacher_mode = mode
+        print(f"Teacher Mode set to {mode}")
     
     def show_ai_selection(self):
         # Show AI selection screen
         self.current_screen = self.ai_select_screen
     
     def start_new_game(self):
-        # Start a new game with current AI mode
-        self.game_screen = GameScreen(self, 1, 0, [], self.ai_mode)
+        # Start a new game with current AI mode and teacher mode
+        print(f"Starting new game with AI mode: {self.ai_mode}, Teacher mode: {self.teacher_mode}")
+        self.game_screen = GameScreen(self, 1, 0, [], self.ai_mode, self.teacher_mode)
         self.current_screen = self.game_screen
     
     def load_game(self):
         # Load a saved game
         save_data = self.save_manager.load_game()
         if save_data:
-            level, correct_answers, completed_questions, ai_mode = save_data
+            if len(save_data) == 5:
+                level, correct_answers, completed_questions, ai_mode, teacher_mode = save_data
+            else: 
+                level, correct_answers, completed_questions, ai_mode = save_data
+                teacher_mode = "normal" # Default to normal mode if not specified
+                
             self.ai_mode = ai_mode
-            self.game_screen = GameScreen(self, level, correct_answers, completed_questions, ai_mode)
+            self.teacher_mode = teacher_mode
+            self.game_screen = GameScreen(self, level, correct_answers, completed_questions, ai_mode, teacher_mode)
             self.current_screen = self.game_screen
         else:
             # If no save exists, show AI selection screen

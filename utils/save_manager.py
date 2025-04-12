@@ -27,6 +27,14 @@ class SaveManager:
         try:
             with open(self.save_file, 'rb') as f:
                 game_state = pickle.load(f)
+            
+            # Handle backward compatibility with older save files
+            # If the save file doesn't have teacher mode (only has 4 items),
+            # add a default "normal" teacher mode
+            if len(game_state) == 4:
+                level, correct_answers, completed_questions, ai_mode = game_state
+                game_state = (level, correct_answers, completed_questions, ai_mode, "normal")
+                
             return game_state
         except Exception as e:
             print(f"Error loading game: {e}")

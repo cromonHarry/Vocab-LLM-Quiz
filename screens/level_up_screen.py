@@ -34,12 +34,13 @@ class LevelUpScreen:
     
     def proceed_to_next_level(self):
         # Proceed to the next level gameplay
-        # Preserve the AI mode from the previous screen
+        # Preserve the AI mode and teacher mode from the previous screen
         ai_mode = self.game.game_screen.logic.ai_mode
+        teacher_mode = self.game.game_screen.logic.teacher_mode
         
-        # Create new game screen with the same AI mode
+        # Create new game screen with the same AI mode and teacher mode
         self.game.game_screen = self.game.game_screen.__class__(
-            self.game, self.level, 0, [], ai_mode
+            self.game, self.level, 0, [], ai_mode, teacher_mode
         )
         self.game.current_screen = self.game.game_screen
         
