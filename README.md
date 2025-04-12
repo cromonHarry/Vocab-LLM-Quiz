@@ -1,14 +1,15 @@
 # English Vocabulary Game
 
 A simple and interactive Pygame-based application for learning English vocabulary through multiple-choice questions. The game features AI assistance powered by large language models to help players understand and learn new words. This reasearch is aiming to find out if hint provided by LLMs can really help learner perform better.
+Also, this game provides 2 different teacher modes: normal and sharpmouse. The research is also aiming to find out if different role-play hint will influence the performance of the learner.
 
 ## Features
 
 - Three progressive difficulty levels
 - AI assistant can provides hints for difficult questions
 - Two AI modes:
-  - **Online AI**: Powered by Grok-2 (requires internet connection)
-  - **Local AI**: Using a fine-tuned Llama3.2-1b model (works offline), the reason to use 1B model is to minimize memory consumption as much as possible and generate text more quickly.
+  - **Online AI**: Powered by Grok-3 (requires internet connection)
+  - **Local AI**: Using a fine-tuned Qwen2.5-7b model (works offline), the reason to use 7B model is to minimize memory consumption as much as possible and generate text more quickly. However, the performance of 7b model is still not good with a lot of hallucination. So finetuning is necessary to reduce hallucination.
 
 ## Installation
 
@@ -20,7 +21,7 @@ A simple and interactive Pygame-based application for learning English vocabular
 pip install -r requirements.txt
 ```
 
-4. For local AI mode, download the model from [Hugging Face](https://huggingface.co/CromonZhang/English-1B) and place it in the `model` directory
+4. For local AI mode, download the model from [Hugging Face](https://huggingface.co/CromonZhang/Qwen-2.5-7b-sharpmouse) and place it in the `model` directory
 
 ## How to Play
 
@@ -45,14 +46,14 @@ python main.py
 
 ## Model and Training
 
-The local AI assistant uses a custom fine-tuned model based on Llama3.2-1b. The fine-tuning process involved:
-1. Generating question hints for 10,000 samples using GPT-4o
+The local AI assistant uses a custom fine-tuned model based on Qwen2.5-7b. The fine-tuning process involved:
+1. Generating question hints for around 12,000 samples using GPT-4o-mini
 2. Converting to Alpaca format for knowledge distillation
-3. Fine-tuning the Llama3.2-1b model with this dataset
+3. Fine-tuning the Qwen-2.5-7b model with this dataset
 
 You can find:
-- The fine-tuned model at: [CromonZhang/English-1B](https://huggingface.co/CromonZhang/English-1B)
-- Training code and dataset at: [Google Drive](https://drive.google.com/file/d/10syfEXcb7wrEKPVVJ4fxygfbiRSjFPXt/view?usp=sharing)
+- The fine-tuned model at: [CromonZhang/Qwen-2.5-7b-sharpmouse](https://huggingface.co/CromonZhang/Qwen-2.5-7b-sharpmouse)
+- Training code and dataset at: [Google Drive](https://drive.google.com/drive/folders/1cafndkxKU5DvHbRHA3rk_n8JwpGnlklh?usp=sharing)
 
 ## Future Improvements
 
