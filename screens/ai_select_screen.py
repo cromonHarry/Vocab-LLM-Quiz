@@ -24,7 +24,7 @@ class AISelectScreen:
         self.description_font = pygame.font.SysFont('Arial', 24)
         
         # Button descriptions
-        self.online_description = "Use Grok-2 for hints (requires internet)"
+        self.online_description = "Use Grok-3 for hints (requires internet)"
         self.local_description = "Use local model for hints (no internet needed)"
         self.current_description = None
         
