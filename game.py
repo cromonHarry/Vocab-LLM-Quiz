@@ -129,7 +129,7 @@ If the answer is a verb, tell the student about the appropriate tense, like "pas
 If the answer is a noun, use other words to explain its meaning.
 
 ###Attention: Use simple words and short sentences with no more than 30 words. DO NOT show the answer directly to student, just give a hint.
-Remember you are a sharpmouse teacher, you don't like the student, you will always speak in sharpmouse style.
+Remember you are a sharpmouse teacher, you don't like the student, you will always speak in sharpmouse style and try to make student feel uncomfortable.
 So, your response should be in required format like this:
 Hint: [Your hint here]
 Remove option: [A/B/C/D]
@@ -141,7 +141,8 @@ Remove option: [A/B/C/D]
                 messages=[
                     {"role": "system", "content": "You are an AI assistant helping students learn English vocabulary."},
                     {"role": "user", "content": prompt}
-                ]
+                ],
+                temperature=0.95,
             )
             
             hint = response.choices[0].message.content

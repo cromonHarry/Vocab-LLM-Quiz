@@ -4,7 +4,7 @@ import time
 from game import GameLogic
 from utils.config import (
     SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, BLACK, GRAY, LIGHT_GRAY, 
-    BLUE, LIGHT_BLUE, GREEN, RED, BG_IMAGE, ASSISTANT_IMAGE
+    BLUE, LIGHT_BLUE, GREEN, RED, BG_IMAGE, ASSISTANT_IMAGE, QUESTIONS_PER_LEVEL
 )
 
 class GameScreen:
@@ -206,7 +206,7 @@ class GameScreen:
         
         # Draw game info
         level_text = f"Level: {self.logic.current_level}"
-        progress_text = f"Progress: {self.logic.correct_answers}/{10}"
+        progress_text = f"Progress: {self.logic.correct_answers}/{QUESTIONS_PER_LEVEL}"
         ai_text = f"AI: {'Grok-3' if self.logic.ai_mode == 'online' else 'Local Model'}"
         teacher_text = f"Teacher: {'Normal' if self.logic.teacher_mode == 'normal' else 'Sharpmouse'}"
         
