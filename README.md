@@ -3,6 +3,8 @@
 A simple and interactive Pygame-based application for learning English vocabulary through multiple-choice questions. The game features AI assistance powered by large language models to help players understand and learn new words. This reasearch is aiming to find out if hint provided by LLMs can really help learner perform better.
 Also, this game provides 2 different teacher modes: normal and sharpmouse. The research is also aiming to find out if different role-play hint will influence the performance of the learner.
 
+Demo video: https://drive.google.com/file/d/1FSOoecbp-TIq2Ei6eJuk4m34BL3usLS1/view?usp=sharing
+
 ## Features
 
 - Three progressive difficulty levels
