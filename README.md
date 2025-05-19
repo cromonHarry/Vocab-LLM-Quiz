@@ -23,6 +23,7 @@ Demo video: https://drive.google.com/file/d/1FSOoecbp-TIq2Ei6eJuk4m34BL3usLS1/vi
 pip install -r requirements.txt
 ```
 
+4. Place your own grok-3 api key in `utils/config.py`, line 37.
 4. For local AI mode, download the model from [Hugging Face](https://huggingface.co/CromonZhang/Qwen-2.5-7b-sharpmouse) and place it in the `model` directory
 
 ## How to Play
